@@ -46,14 +46,19 @@ fun TelaLivros(viewModel: LivrosViewModel) {
         }
 
         is EstadoUILivros.Sucesso -> {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Total de livros: ${estado.livros.size}")
+            val livrosComImagem = estado.livros.filter {
+                it.informacoesVolume.imageLinks?.capaFormatada != null
+            }
 
-                estado.livros.forEach { livro ->
-                    Text(text = livro.informacoesVolume.title)
+            if (livrosComImagem.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Nenhum livro com imagem disponível 😢")
                 }
+            } else {
+                ListaLivrosGrid(listaLivros = livrosComImagem)
             }
         }
+
 
     }
 }
